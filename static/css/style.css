@@ -1,0 +1,90 @@
+/* Center content and buttons */
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0); /* Soft background gradient */
+}
+
+/* Center buttons with gap between them */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Increased gap for a more spacious look */
+}
+
+/* Layout for join elements */
+.join {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 10px; /* Spacing between join elements */
+}
+
+/* Style for create button */
+.create-btn {
+  width: 100%;
+  background-color: #4CAF50; /* Green background for button */
+  color: white; /* White text */
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer; /* Cursor changes on hover */
+  transition: background 0.3s ease; /* Smooth hover transition */
+}
+
+.create-btn:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Message box with subtle shadow and padding */
+.message-box {
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: whitesmoke;
+  height: 80vh;
+  width: 80vw;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable messages with padding and shadow */
+.messages {
+  overflow-y: auto; /* Ensures smooth scrolling */
+  flex: 1;
+  width: 100%;
+  padding: 10px; /* Adds padding to messages */
+  background-color: white; /* White background for better visibility */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+/* Style for inputs section */
+.inputs {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Spacing between elements */
+  background: #f5f5f5; /* Light gray background */
+  border-top: 1px solid #ccc; /* Border on top */
+}
+
+/* Style for audio elements */
+audio {
+  width: 100%; /* Audio players take full width */
+  border: none;
+  outline: none; /* No focus border */
+  margin-top: 10px; /* Space between audio player and text */
+}
+
+/* Style for headings */
+h2 {
+  text-align: center;
+  color: #333; /* Dark gray for contrast */
+  font-size: 1.5em; /* Larger font size */
+}

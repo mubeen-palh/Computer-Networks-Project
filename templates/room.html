@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="message-box">
+  <h2>Chat Room: {{ code }}</h2>
+  
+  <!-- Area to display text and audio messages -->
+  <div class="messages" id="messages"></div>
+
+  <!-- Text input for text messages -->
+  <div class="inputs">
+    <input
+      type="text"
+      placeholder="Type your message"
+      name="message"
+      id="message"
+    />
+    <button type="button" id="send-btn">Send</button>
+  </div>
+
+  <!-- Button to record voice messages -->
+  <div>
+    <button type="button" id="record-btn">Voice Message</button>
+  </div>
+</div>
+
+<!-- Script to handle text and voice messages -->
+<script type="text/javascript">
+  const socketio = io(); // Initialize SocketIO
+  const messages = document.getElementById("messages");
+
+  // Function to create a text message in the chat
+  const createMessage = (name, msg) => {
+    const content = `
+    <div class="message">
+      <strong>${name}</strong>: ${msg}
+      <span class="muted">${new Date().toLocaleString()}</span>
+    </div>
+    `;
+    messages.innerHTML += content; // Append the message
+  };
+
+  // Function to send text messages
+  const sendMessage = () => {
+    const messageInput = document.getElementById("message");
+    if (messageInput.value === "") return; // Don't send empty messages
+    socketio.emit("message", { data: messageInput.value }); // Send text message
+    messageInput.value = ""; // Clear input after sending
+  };
+
+  // Functions to start and stop voice recording
+  let mediaRecorder = null;
+  let audioChunks = [];
+
+  const startRecording = async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("Your browser doesn't support voice recording.");
+      return;
+    }
+
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (event) => {
+      audioChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Audio = reader.result; // Convert Blob to base64
+        socketio.emit("audio_message", { data: base64Audio }); // Send audio
+      };
+      reader.readAsDataURL(audioBlob); // Convert Blob to base64
+
+      audioChunks = []; // Reset audio chunks
+    };
+
+    mediaRecorder.start(); // Start recording
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder) {
+      mediaRecorder.stop(); // Stop recording
+    }
+  };
+
+  // Add event listeners for sending text and recording voice
+  document.getElementById("send-btn").addEventListener("click", sendMessage);
+  document.getElementById("record-btn").addEventListener("mousedown", startRecording);
+  document.getElementById("record-btn").addEventListener("mouseup", stopRecording);
+
+  // Handle received text messages
+  socketio.on("message", (data) => {
+    createMessage(data.name, data.message); // Display received text message
+  });
+
+  // Function to create and display audio messages
+  const createAudioMessage = (name, base64Audio) => {
+    const messageWrapper = document.createElement("div");
+    messageWrapper.innerHTML = `
+      <strong>${name}</strong>: sent a voice message
+      <span >${new Date().toLocaleString()}</span>
+    `;
+    const audioElement = document.createElement("audio");
+    audioElement.controls = true; // Enable playback controls
+    audioElement.src = base64Audio; // Set source to base64 audio data
+    messageWrapper.appendChild(audioElement); // Add audio message
+    messages.appendChild(messageWrapper); // Append to chat area
+  };
+
+  // Handle received voice messages
+  socketio.on("audio_message", (data) => {
+    console.log("Received base64 audio:", data.data);
+    createAudioMessage(data.name, data.data); // Display received audio message
+  });
+
+</script>
+
+{% for msg in messages %}
+<script type="text/javascript">
+  createMessage("{{msg.name}}", "{{msg.message}}");
+</script>
+{% endfor %} {% endblock %}

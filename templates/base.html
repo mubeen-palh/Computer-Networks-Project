@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <div class = container>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat App</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <style>
+   .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .join {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .create-btn {
+    width: 100%;
+  }
+
+  .message-box {
+    border: 2px solid #0b0b0b;
+    border-radius: 10px;
+    background-color: #6f47a7;
+    padding: 10px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+  .messages {
+    overflow-y: scroll;
+    flex: 1;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  
+  .inputs {
+    padding: 10px;
+    display: flex;
+  }
+
+  h2 {
+    text-align: center;
+    color: #100c0c;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+  #message {
+    flex: 1;
+  }
+  
+  .text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .muted {
+    font-size: 10px;
+    color: rgb(14, 11, 11);
+  }
+
+  .container {
+    max-width: 800px;
+    height: 400px;
+    margin: 20px auto;
+    padding: 40px;
+    background-color: #9d9ac6;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+  
+    </style>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="content">{% block content %} {% endblock %}</div>
+  </body>
+</div>
+</html>
